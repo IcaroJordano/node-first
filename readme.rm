@@ -1,0 +1,18 @@
+#instalar o node
+#teste npm -v e node -v
+
+"
+import { createServer } from "node:http";
+
+const server = createServer(() => {
+  console.log("OI");
+});
+
+server.listen(3333);
+// server.listen(PORTA);
+// ex: localhost:33333
+"
+
+//ao tentar rodar com "node server.js" retorna erro 
+
+//rode npm init -y
