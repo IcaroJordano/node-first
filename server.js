@@ -1,56 +1,29 @@
-// import { createServer } from "node:http";
-//
-// const server = createServer((request, response) => {
-// console.log("OI");
-//   response.write("Hello world");
-//   return response.end();
-// });
-//
-// server.listen(3333);
-
 import { fastify } from "fastify";
 import { DatabasePostgres } from "./database-postgres.js";
 
-// import { DatabaseMemory } from "./database-memory.js";
-
 const server = fastify();
 
-// const database = new DatabaseMemory();
 const database = new DatabasePostgres();
-
-//Request Body (post. put)
 
 server.post("/videos", async (request, reply) => {
   const { title, duration, description } = request.body;
 
-  await database.create({
-    title,
-    description,
-    duration,
-  });
+  await database.create({ title, description, duration });
 
   return reply.status(201).send();
-  //201 === algo foi criado
 });
 
 server.get("/videos", async (request) => {
   const search = request.query.search;
-
   const videos = await database.list(search);
-  console.log(videos);
   return videos;
 });
 
 server.put("/videos/:id", async (request, reply) => {
   const videoId = request.params.id;
-
   const { title, duration, description } = request.body;
 
-  await database.update(videoId, {
-    title,
-    duration,
-    description,
-  });
+  await database.update(videoId, { title, duration, description });
 
   return reply.status(204).send();
 });
@@ -63,15 +36,16 @@ server.delete("/videos/:id", async (request, reply) => {
   return reply.status(204).send();
 });
 
+// 🚀 CORRETO PARA RENDER:
 server
   .listen({
     host: "0.0.0.0",
     port: Number(process.env.PORT) || 3333,
   })
   .then(() => {
-    console.log("🚀 HTTP server running");
+    console.log("🚀 Server running");
   })
   .catch((err) => {
-    console.error("❌ Failed to start server:", err);
+    console.error("❌ Server failed to start:", err);
     process.exit(1);
   });
