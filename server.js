@@ -63,7 +63,15 @@ server.delete("/videos/:id", async (request, reply) => {
   return reply.status(204).send();
 });
 
-server.listen({
-  host: "0.0.0.0",
-  port: process.env.PORT || 3333,
-});
+server
+  .listen({
+    host: "0.0.0.0",
+    port: Number(process.env.PORT) || 3333,
+  })
+  .then(() => {
+    console.log("🚀 HTTP server running");
+  })
+  .catch((err) => {
+    console.error("❌ Failed to start server:", err);
+    process.exit(1);
+  });
